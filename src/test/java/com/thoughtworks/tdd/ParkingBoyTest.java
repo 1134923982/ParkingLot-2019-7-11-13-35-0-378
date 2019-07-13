@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.exception.CarHasBeenPardedException;
 import com.thoughtworks.exception.ParkingLotNotPositionException;
 import com.thoughtworks.exception.TicketIsUsedException;
 import com.thoughtworks.exception.WrongTicketException;
@@ -47,7 +48,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException {
+    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException {
         //given
         Car car = new Car();
 
@@ -111,5 +112,20 @@ public class ParkingBoyTest {
 
         //then
         Assertions.assertThrows(ParkingLotNotPositionException.class, ()->parkingBoy.park(elevenCar));
+    }
+
+    @Test
+    public void should_not_park_car_when_car_is_parked() throws Exception {
+        //given
+        Car car = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        parkingBoy.park(car);
+
+        //then
+        Assertions.assertThrows(CarHasBeenPardedException.class, ()->parkingBoy.park(car));
     }
 }

@@ -1,6 +1,7 @@
 package com.thoughtworks.tdd;
 
 
+import com.thoughtworks.exception.CarHasBeenPardedException;
 import com.thoughtworks.exception.ParkingLotNotPositionException;
 
 public class ParkingBoy {
@@ -9,7 +10,7 @@ public class ParkingBoy {
         this.parkingLot = parkingLot;
     }
 
-    public Ticket park(Car car) throws ParkingLotNotPositionException {
+    public Ticket park(Car car) throws ParkingLotNotPositionException, CarHasBeenPardedException {
         Ticket ticket = parkingLot.park(car);
         return ticket;
     }
