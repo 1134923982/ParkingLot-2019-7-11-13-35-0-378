@@ -14,36 +14,40 @@ public class ParkingLot {
         this.parkingCarTicket = new HashMap<>();
     }
 
-    public Ticket park(Car car) throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
-        if(car == null){
-            throw new CarIsNullException();
-        }
-        if(parkingCarTicket.containsValue(car)){
-            throw new CarHasBeenPardedException();
-        }
-        if(capacity>0){
-            Ticket ticket = new Ticket();
-            parkingCarTicket.put(ticket, car);
-            this.capacity--;
-            return ticket;
-        }else {
-            throw new ParkingLotNotPositionException();
-        }
+    public int getCapacity() {
+        return this.capacity;
     }
 
-    public Car getCar(Ticket ticket) throws TicketIsUsedException, WrongTicketException {
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public Ticket park(Car car) throws CarHasBeenPartedException, CarIsNullException {
+        if (car == null) {
+            throw new CarIsNullException();
+        }
+        if (parkingCarTicket.containsValue(car)) {
+            throw new CarHasBeenPartedException();
+        }
+
+        Ticket ticket = new Ticket();
+        parkingCarTicket.put(ticket, car);
+        this.capacity--;
+        return ticket;
+
+    }
+
+    public Car getCar(Ticket ticket) throws TicketIsUsedException {
         if (parkingCarTicket.containsKey(ticket)) {
             if (parkingCarTicket.get(ticket) != null) {
                 Car car = parkingCarTicket.get(ticket);
-                parkingCarTicket.put(ticket,null);
+                parkingCarTicket.put(ticket, null);
                 this.capacity++;
                 return car;
             } else {
                 throw new TicketIsUsedException();
             }
-        } else {
-            throw new WrongTicketException();
         }
-
+        return null;
     }
 }

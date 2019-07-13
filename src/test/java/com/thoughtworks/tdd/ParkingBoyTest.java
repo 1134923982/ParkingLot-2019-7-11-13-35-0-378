@@ -1,7 +1,6 @@
 package com.thoughtworks.tdd;
 
 import com.thoughtworks.exception.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -13,10 +12,12 @@ public class ParkingBoyTest {
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         Ticket ticket = parkingBoy.park(car).getTicket();
+
         Car fetchedCar = parkingBoy.fetch(ticket).getCar();
 
         //then
@@ -30,7 +31,8 @@ public class ParkingBoyTest {
         Car secondCar = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         Ticket firstTicket = parkingBoy.park(firstCar).getTicket();
@@ -45,12 +47,13 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
+    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPartedException, CarIsNullException {
         //given
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
         Ticket wrongTicket = new Ticket();
 
         //when
@@ -69,7 +72,8 @@ public class ParkingBoyTest {
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         Ticket ticket = parkingBoy.park(car).getTicket();
@@ -96,7 +100,8 @@ public class ParkingBoyTest {
         Car elevenCar = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         parkingBoy.park(firstCar);
@@ -120,7 +125,8 @@ public class ParkingBoyTest {
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         parkingBoy.park(car);
@@ -134,7 +140,8 @@ public class ParkingBoyTest {
     public void should_not_park_car_when_car_is_null() throws Exception {
         //given
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         Ticket ticket = parkingBoy.park(null).getTicket();
@@ -143,12 +150,14 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_get_error_message_when_ticket_is_wrong() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
+    public void should_get_error_message_when_ticket_is_wrong() throws CarHasBeenPartedException, ParkingLotNotPositionException, CarIsNullException {
         //given
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
+//        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         Ticket wrongTicket = new Ticket();
 
         //when
@@ -156,7 +165,6 @@ public class ParkingBoyTest {
         FetchCarResult fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
         FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
         FetchCarResult fetchCarByUsedTicket = parkingBoy.fetch(ticket);
-
         //then
         assertSame("Unrecognized parking ticket.",fetchCarByWrongTicket.getMessage());
         assertSame(null,fetchCarResult.getMessage());
@@ -164,12 +172,13 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_get_error_message_when_ticket_is_null() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
+    public void should_get_error_message_when_ticket_is_null() throws CarHasBeenPartedException, ParkingLotNotPositionException, CarIsNullException {
         //given
         Car car = new Car();
 
         ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots = {parkingLot};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
@@ -179,7 +188,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_get_not_enough_position_when_parkingLot_not_position() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
+    public void should_get_not_enough_position_when_parkingLot_not_position(){
         //given
         Car firstCar = new Car();
         Car secondCar = new Car();
@@ -193,8 +202,8 @@ public class ParkingBoyTest {
         Car tenthCar = new Car();
         Car elevenCar = new Car();
 
-        ParkingLot parkingLot = new ParkingLot();
-        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        ParkingLot[] parkingLots ={new ParkingLot()};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
         parkingBoy.park(firstCar);
@@ -210,5 +219,41 @@ public class ParkingBoyTest {
 
         //then
         assertSame("Not enough position.",parkingBoy.park(elevenCar).getMessage());
+    }
+
+    @Test
+    public void should_park_in_second_parkingLot_when_first_parkingLot_not_position(){
+        //given
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+        Car thirdCar = new Car();
+        Car fourthCar = new Car();
+        Car fifthCar = new Car();
+        Car sixthCar = new Car();
+        Car seventhCar = new Car();
+        Car eighthCar = new Car();
+        Car ninthCar = new Car();
+        Car tenthCar = new Car();
+        Car elevenCar = new Car();
+
+        ParkingLot[] parkingLots ={new ParkingLot(),new ParkingLot()};
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
+
+        //when
+        parkingBoy.park(firstCar);
+        parkingBoy.park(secondCar);
+        parkingBoy.park(thirdCar);
+        parkingBoy.park(fourthCar);
+        parkingBoy.park(fifthCar);
+        parkingBoy.park(sixthCar);
+        parkingBoy.park(seventhCar);
+        parkingBoy.park(eighthCar);
+        parkingBoy.park(ninthCar);
+        parkingBoy.park(tenthCar);
+        ParkCarResult parkCarResult = parkingBoy.park(elevenCar);
+
+        //then
+        assertSame(0, parkCarResult.getParkingLots()[0].getCapacity());
+        assertSame(9, parkCarResult.getParkingLots()[1].getCapacity());
     }
 }
