@@ -1,5 +1,7 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.exception.TicketIsUsedException;
+import com.thoughtworks.exception.WrongTicketException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -56,6 +58,22 @@ public class ParkingBoyTest {
         parkingBoy.park(car);
 
         //then
-        Assertions.assertThrows(Exception.class, ()->parkingBoy.fetch(wrongTicket));
+        Assertions.assertThrows(WrongTicketException.class, ()->parkingBoy.fetch(wrongTicket));
+    }
+
+    @Test
+    public void should_not_fetch_car_when_ticket_is_used() throws Exception {
+        //given
+        Car car = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        Ticket ticket = parkingBoy.park(car);
+        parkingBoy.fetch(ticket);
+
+        //then
+        Assertions.assertThrows(TicketIsUsedException.class, ()->parkingBoy.fetch(ticket));
     }
 }
