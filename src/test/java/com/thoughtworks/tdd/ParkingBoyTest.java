@@ -343,6 +343,24 @@ public class ParkingBoyTest {
         assertSame(null, fetchedSecondCar);
     }
 
+    @Test
+    public void should_bark_manager_park_or_fetch_car_when_parking_manager_park_and_fetch(){
+        //given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        ParkingLot[] parkingManagerParkingLots ={firstParkingLot,secondParkingLot};
+
+        ParkingManager parkingManager = new ParkingManager(parkingManagerParkingLots);
+        Car car = new Car();
+
+        //when
+        Ticket ticket = parkingManager.park(car).getTicket();
+        Car fetchedCar = parkingManager.fetch(ticket).getCar();
+
+        //then
+        assertSame(car, fetchedCar);
+    }
+
 }
 
 
