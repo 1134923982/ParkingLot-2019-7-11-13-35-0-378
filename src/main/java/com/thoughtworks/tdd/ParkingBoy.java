@@ -5,29 +5,41 @@ import com.thoughtworks.exception.*;
 
 public class ParkingBoy {
     private ParkingLot parkingLot;
+
     public ParkingBoy(ParkingLot parkingLot) {
         this.parkingLot = parkingLot;
     }
 
-    public Ticket park(Car car) throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
-        Ticket ticket = parkingLot.park(car);
-        return ticket;
+    public ParkCarResult park(Car car) {
+        ParkCarResult parkCarResult = new ParkCarResult();
+        try {
+            parkCarResult.setTicket(parkingLot.park(car));
+        } catch (ParkingLotNotPositionException parkingLotNotPositionException) {
+            parkCarResult.setTicket(null);
+            parkCarResult.setMessage("Not enough position.");
+        } catch (CarIsNullException carIsNullException) {
+            parkCarResult.setTicket(null);
+        }catch (CarHasBeenPardedException carIsNullException) {
+            parkCarResult.setTicket(null);
+        } finally {
+            return parkCarResult;
+        }
     }
 
-    public FetchCarResult fetch(Ticket ticket){
-        FetchCarResult fetchCarResult= new FetchCarResult();
-        try{
+    public FetchCarResult fetch(Ticket ticket) {
+        FetchCarResult fetchCarResult = new FetchCarResult();
+        try {
             fetchCarResult.setCar(parkingLot.getCar(ticket));
-        }catch (TicketIsUsedException ticketIsUsedException){
+        } catch (TicketIsUsedException ticketIsUsedException) {
             fetchCarResult.setCar(null);
             fetchCarResult.setMessage("Unrecognized parking ticket.");
-        }catch (WrongTicketException wrongTicketException){
-            if(ticket==null){
+        } catch (WrongTicketException wrongTicketException) {
+            if (ticket == null) {
                 fetchCarResult.setMessage("Please provide your parking ticket.");
-            }else {
+            } else {
                 fetchCarResult.setMessage("Unrecognized parking ticket.");
             }
-        }finally {
+        } finally {
             return fetchCarResult;
         }
 

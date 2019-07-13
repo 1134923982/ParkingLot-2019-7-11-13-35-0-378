@@ -16,7 +16,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
         //when
-        Ticket ticket = parkingBoy.park(car);
+        Ticket ticket = parkingBoy.park(car).getTicket();
         Car fetchedCar = parkingBoy.fetch(ticket).getCar();
 
         //then
@@ -33,10 +33,10 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
         //when
-        Ticket firstTicket = parkingBoy.park(firstCar);
+        Ticket firstTicket = parkingBoy.park(firstCar).getTicket();
         Car fetchedFirstCar = parkingBoy.fetch(firstTicket).getCar();
 
-        Ticket secondTicket = parkingBoy.park(secondCar);
+        Ticket secondTicket = parkingBoy.park(secondCar).getTicket();
         Car fetchedSecondCar = parkingBoy.fetch(secondTicket).getCar();
 
         //then
@@ -72,7 +72,7 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
         //when
-        Ticket ticket = parkingBoy.park(car);
+        Ticket ticket = parkingBoy.park(car).getTicket();
         parkingBoy.fetch(ticket);
         FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
 
@@ -110,9 +110,8 @@ public class ParkingBoyTest {
         parkingBoy.park(ninthCar);
         parkingBoy.park(tenthCar);
 
-
         //then
-        Assertions.assertThrows(ParkingLotNotPositionException.class, ()->parkingBoy.park(elevenCar));
+        assertSame(null,parkingBoy.park(elevenCar).getTicket());
     }
 
     @Test
@@ -125,9 +124,10 @@ public class ParkingBoyTest {
 
         //when
         parkingBoy.park(car);
+        Ticket ticket = parkingBoy.park(car).getTicket();
 
         //then
-        Assertions.assertThrows(CarHasBeenPardedException.class, ()->parkingBoy.park(car));
+        assertSame(null, ticket);
     }
 
     @Test
@@ -137,9 +137,9 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
 
         //when
-
+        Ticket ticket = parkingBoy.park(null).getTicket();
         //then
-        Assertions.assertThrows(CarIsNullException.class, ()->parkingBoy.park(null));
+        assertSame(null,ticket);
     }
 
     @Test
@@ -152,15 +152,13 @@ public class ParkingBoyTest {
         Ticket wrongTicket = new Ticket();
 
         //when
-        Ticket ticket = parkingBoy.park(car);
+        Ticket ticket = parkingBoy.park(car).getTicket();
         FetchCarResult fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
-//        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
         FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
         FetchCarResult fetchCarByUsedTicket = parkingBoy.fetch(ticket);
 
         //then
         assertSame("Unrecognized parking ticket.",fetchCarByWrongTicket.getMessage());
-//        assertSame("Unrecognized parking ticket.",fetchCarByNull.getMessage());
         assertSame(null,fetchCarResult.getMessage());
         assertSame("Unrecognized parking ticket.",fetchCarByUsedTicket.getMessage());
     }
@@ -178,5 +176,39 @@ public class ParkingBoyTest {
 
         //then
         assertSame("Please provide your parking ticket.",fetchCarByNull.getMessage());
+    }
+
+    @Test
+    public void should_get_not_enough_position_when_parkingLot_not_position() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
+        //given
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+        Car thirdCar = new Car();
+        Car fourthCar = new Car();
+        Car fifthCar = new Car();
+        Car sixthCar = new Car();
+        Car seventhCar = new Car();
+        Car eighthCar = new Car();
+        Car ninthCar = new Car();
+        Car tenthCar = new Car();
+        Car elevenCar = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        parkingBoy.park(firstCar);
+        parkingBoy.park(secondCar);
+        parkingBoy.park(thirdCar);
+        parkingBoy.park(fourthCar);
+        parkingBoy.park(fifthCar);
+        parkingBoy.park(sixthCar);
+        parkingBoy.park(seventhCar);
+        parkingBoy.park(eighthCar);
+        parkingBoy.park(ninthCar);
+        parkingBoy.park(tenthCar);
+
+        //then
+        assertSame("Not enough position.",parkingBoy.park(elevenCar).getMessage());
     }
 }
