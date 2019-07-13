@@ -327,7 +327,6 @@ public class ParkingBoyTest {
         ParkingBoy parkingFirstBoy = new ParkingBoy(parkingBoyFirstParkingLots);
         ParkingBoy parkingSecondBoy = new ParkingBoy(parkingBoySecondParkingLots);
         Car firstCar = new Car();
-        Car secondCar = new Car();
 
         //when
         parkingManager.addParkingBoy(parkingFirstBoy);
@@ -359,6 +358,34 @@ public class ParkingBoyTest {
 
         //then
         assertSame(car, fetchedCar);
+    }
+
+    @Test
+    public void should_show_error_message_when_parking_boy_not_fetch_and_park(){
+        //given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        ParkingLot thirdParkingLot = new ParkingLot();
+        ParkingLot[] parkingManagerParkingLots ={firstParkingLot,secondParkingLot};
+        ParkingManager parkingManager = new ParkingManager(parkingManagerParkingLots);
+        ParkingLot[] parkingBoyFirstParkingLots ={firstParkingLot};
+        ParkingLot[] parkingBoySecondParkingLots ={thirdParkingLot};
+        ParkingBoy parkingFirstBoy = new ParkingBoy(parkingBoyFirstParkingLots);
+        ParkingBoy parkingSecondBoy = new ParkingBoy(parkingBoySecondParkingLots);
+        Car firstCar = new Car();
+
+        //when
+        parkingManager.addParkingBoy(parkingFirstBoy);
+        parkingManager.addParkingBoy(parkingSecondBoy);
+        ArrayList<ParkingBoy> parkingBoys = parkingManager.getParkingBoys();
+        Ticket firstTicket = parkingManager.park(firstCar).getTicket();
+        Ticket secondTicket = parkingManager.park(firstCar).getTicket();
+        String fetchedFirstCarMessage = parkingBoys.get(parkingBoys.size()-2).fetch(firstTicket).getMessage();
+        String fetchedSecondCarMessage = parkingBoys.get(parkingBoys.size()-1).fetch(secondTicket).getMessage();
+
+        //then
+        assertSame(null, fetchedFirstCarMessage);
+        assertSame("Please provide your parking ticket.",fetchedSecondCarMessage);
     }
 
 }
