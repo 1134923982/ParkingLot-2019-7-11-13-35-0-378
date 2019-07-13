@@ -1,9 +1,6 @@
 package com.thoughtworks.tdd;
 
-import com.thoughtworks.exception.CarHasBeenPardedException;
-import com.thoughtworks.exception.ParkingLotNotPositionException;
-import com.thoughtworks.exception.TicketIsUsedException;
-import com.thoughtworks.exception.WrongTicketException;
+import com.thoughtworks.exception.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +45,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException {
+    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
         //given
         Car car = new Car();
 
@@ -127,5 +124,17 @@ public class ParkingBoyTest {
 
         //then
         Assertions.assertThrows(CarHasBeenPardedException.class, ()->parkingBoy.park(car));
+    }
+
+    @Test
+    public void should_not_park_car_when_car_is_null() throws Exception {
+        //given
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+
+        //then
+        Assertions.assertThrows(CarIsNullException.class, ()->parkingBoy.park(null));
     }
 }

@@ -1,10 +1,7 @@
 package com.thoughtworks.tdd;
 
 
-import com.thoughtworks.exception.CarHasBeenPardedException;
-import com.thoughtworks.exception.ParkingLotNotPositionException;
-import com.thoughtworks.exception.TicketIsUsedException;
-import com.thoughtworks.exception.WrongTicketException;
+import com.thoughtworks.exception.*;
 
 import java.util.HashMap;
 
@@ -17,7 +14,10 @@ public class ParkingLot {
         this.parkingCarTicket = new HashMap<>();
     }
 
-    public Ticket park(Car car) throws ParkingLotNotPositionException, CarHasBeenPardedException {
+    public Ticket park(Car car) throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
+        if(car == null){
+            throw new CarIsNullException();
+        }
         if(parkingCarTicket.containsValue(car)){
             throw new CarHasBeenPardedException();
         }
