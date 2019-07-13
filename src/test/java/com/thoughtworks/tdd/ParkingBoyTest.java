@@ -1,5 +1,6 @@
 package com.thoughtworks.tdd;
 
+import com.thoughtworks.exception.ParkingLotNotPositionException;
 import com.thoughtworks.exception.TicketIsUsedException;
 import com.thoughtworks.exception.WrongTicketException;
 import org.junit.jupiter.api.Assertions;
@@ -46,7 +47,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_not_fetch_car_when_ticket_is_wrong(){
+    public void should_not_fetch_car_when_ticket_is_wrong() throws ParkingLotNotPositionException {
         //given
         Car car = new Car();
 
@@ -75,5 +76,40 @@ public class ParkingBoyTest {
 
         //then
         Assertions.assertThrows(TicketIsUsedException.class, ()->parkingBoy.fetch(ticket));
+    }
+
+    @Test
+    public void should_not_return_ticket_when_parkingLot_is_not_position() throws Exception {
+        //given
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+        Car thirdCar = new Car();
+        Car fourthCar = new Car();
+        Car fifthCar = new Car();
+        Car sixthCar = new Car();
+        Car seventhCar = new Car();
+        Car eighthCar = new Car();
+        Car ninthCar = new Car();
+        Car tenthCar = new Car();
+        Car elevenCar = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        parkingBoy.park(firstCar);
+        parkingBoy.park(secondCar);
+        parkingBoy.park(thirdCar);
+        parkingBoy.park(fourthCar);
+        parkingBoy.park(fifthCar);
+        parkingBoy.park(sixthCar);
+        parkingBoy.park(seventhCar);
+        parkingBoy.park(eighthCar);
+        parkingBoy.park(ninthCar);
+        parkingBoy.park(tenthCar);
+
+
+        //then
+        Assertions.assertThrows(ParkingLotNotPositionException.class, ()->parkingBoy.park(elevenCar));
     }
 }
