@@ -143,7 +143,7 @@ public class ParkingBoyTest {
     }
 
     @Test
-    public void should_get_error_message_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
+    public void should_get_error_message_when_ticket_is_wrong() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
         //given
         Car car = new Car();
 
@@ -154,14 +154,29 @@ public class ParkingBoyTest {
         //when
         Ticket ticket = parkingBoy.park(car);
         FetchCarResult fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
-        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
+//        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
         FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
         FetchCarResult fetchCarByUsedTicket = parkingBoy.fetch(ticket);
 
         //then
         assertSame("Unrecognized parking ticket.",fetchCarByWrongTicket.getMessage());
-        assertSame("Unrecognized parking ticket.",fetchCarByNull.getMessage());
+//        assertSame("Unrecognized parking ticket.",fetchCarByNull.getMessage());
         assertSame(null,fetchCarResult.getMessage());
         assertSame("Unrecognized parking ticket.",fetchCarByUsedTicket.getMessage());
+    }
+
+    @Test
+    public void should_get_error_message_when_ticket_is_null() throws CarHasBeenPardedException, ParkingLotNotPositionException, CarIsNullException {
+        //given
+        Car car = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+
+        //when
+        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
+
+        //then
+        assertSame("Please provide your parking ticket.",fetchCarByNull.getMessage());
     }
 }

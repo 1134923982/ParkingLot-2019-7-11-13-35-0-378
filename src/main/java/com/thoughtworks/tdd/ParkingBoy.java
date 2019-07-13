@@ -22,8 +22,11 @@ public class ParkingBoy {
             fetchCarResult.setCar(null);
             fetchCarResult.setMessage("Unrecognized parking ticket.");
         }catch (WrongTicketException wrongTicketException){
-            fetchCarResult.setCar(null);
-            fetchCarResult.setMessage("Unrecognized parking ticket.");
+            if(ticket==null){
+                fetchCarResult.setMessage("Please provide your parking ticket.");
+            }else {
+                fetchCarResult.setMessage("Unrecognized parking ticket.");
+            }
         }finally {
             return fetchCarResult;
         }
