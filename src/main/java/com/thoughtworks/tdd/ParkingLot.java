@@ -37,6 +37,10 @@ public class ParkingLot {
 
     }
 
+    public HashMap<Ticket, Car> getParkingCarTicket() {
+        return parkingCarTicket;
+    }
+
     public Car getCar(Ticket ticket) throws TicketIsUsedException {
         if (parkingCarTicket.containsKey(ticket)) {
             if (parkingCarTicket.get(ticket) != null) {

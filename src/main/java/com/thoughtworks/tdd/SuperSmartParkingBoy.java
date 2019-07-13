@@ -8,16 +8,18 @@ import com.thoughtworks.exception.TicketIsUsedException;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class SmartParkingBoy {
+public class SuperSmartParkingBoy {
     private ParkingLot[] parkingLots;
 
-    public SmartParkingBoy(ParkingLot[] parkingLots) {
+    public SuperSmartParkingBoy(ParkingLot[] parkingLots) {
         this.parkingLots = parkingLots;
     }
 
     public ParkCarResult park(Car car) {
         ParkCarResult parkCarResult = new ParkCarResult();
-        ParkingLot parkingLot = Arrays.stream(parkingLots).max(Comparator.comparing(ParkingLot::getCapacity)).get();
+        ParkingLot parkingLot = Arrays.stream(parkingLots).max(Comparator.comparing(p -> {
+            return p.getCapacity()/(double)(p.getCapacity()+p.getParkingCarTicket().size());
+        })).get();
         if(parkingLot.getCapacity()>0){
             try {
                 parkCarResult.setTicket(parkingLot.park(car));
