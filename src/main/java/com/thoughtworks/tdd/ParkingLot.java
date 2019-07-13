@@ -31,7 +31,7 @@ public class ParkingLot {
         }
     }
 
-    public Car getCar(Ticket ticket) throws Exception {
+    public Car getCar(Ticket ticket) throws TicketIsUsedException, WrongTicketException {
         if (parkingCarTicket.containsKey(ticket)) {
             if (parkingCarTicket.get(ticket) != null) {
                 Car car = parkingCarTicket.get(ticket);

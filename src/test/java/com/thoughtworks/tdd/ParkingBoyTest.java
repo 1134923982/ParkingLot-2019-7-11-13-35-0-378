@@ -17,7 +17,7 @@ public class ParkingBoyTest {
 
         //when
         Ticket ticket = parkingBoy.park(car);
-        Car fetchedCar = parkingBoy.fetch(ticket);
+        Car fetchedCar = parkingBoy.fetch(ticket).getCar();
 
         //then
         assertSame(car, fetchedCar);
@@ -34,10 +34,10 @@ public class ParkingBoyTest {
 
         //when
         Ticket firstTicket = parkingBoy.park(firstCar);
-        Car fetchedFirstCar = parkingBoy.fetch(firstTicket);
+        Car fetchedFirstCar = parkingBoy.fetch(firstTicket).getCar();
 
         Ticket secondTicket = parkingBoy.park(secondCar);
-        Car fetchedSecondCar = parkingBoy.fetch(secondTicket);
+        Car fetchedSecondCar = parkingBoy.fetch(secondTicket).getCar();
 
         //then
         assertSame(firstCar, fetchedFirstCar);
@@ -55,9 +55,12 @@ public class ParkingBoyTest {
 
         //when
         parkingBoy.park(car);
+        FetchCarResult fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
+        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
 
         //then
-        Assertions.assertThrows(WrongTicketException.class, ()->parkingBoy.fetch(wrongTicket));
+        assertSame(null,fetchCarByWrongTicket.getCar());
+        assertSame(null,fetchCarByWrongTicket.getCar());
     }
 
     @Test
@@ -71,9 +74,10 @@ public class ParkingBoyTest {
         //when
         Ticket ticket = parkingBoy.park(car);
         parkingBoy.fetch(ticket);
+        FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
 
         //then
-        Assertions.assertThrows(TicketIsUsedException.class, ()->parkingBoy.fetch(ticket));
+        assertSame(null,fetchCarResult.getCar());
     }
 
     @Test
@@ -136,5 +140,28 @@ public class ParkingBoyTest {
 
         //then
         Assertions.assertThrows(CarIsNullException.class, ()->parkingBoy.park(null));
+    }
+
+    @Test
+    public void should_get_error_message_when_ticket_is_wrong() throws ParkingLotNotPositionException, CarHasBeenPardedException, CarIsNullException {
+        //given
+        Car car = new Car();
+
+        ParkingLot parkingLot = new ParkingLot();
+        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
+        Ticket wrongTicket = new Ticket();
+
+        //when
+        Ticket ticket = parkingBoy.park(car);
+        FetchCarResult fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
+        FetchCarResult fetchCarByNull = parkingBoy.fetch(null);
+        FetchCarResult fetchCarResult = parkingBoy.fetch(ticket);
+        FetchCarResult fetchCarByUsedTicket = parkingBoy.fetch(ticket);
+
+        //then
+        assertSame("Unrecognized parking ticket.",fetchCarByWrongTicket.getMessage());
+        assertSame("Unrecognized parking ticket.",fetchCarByNull.getMessage());
+        assertSame(null,fetchCarResult.getMessage());
+        assertSame("Unrecognized parking ticket.",fetchCarByUsedTicket.getMessage());
     }
 }
