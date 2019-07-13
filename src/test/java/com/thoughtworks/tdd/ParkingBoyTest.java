@@ -3,6 +3,8 @@ package com.thoughtworks.tdd;
 import com.thoughtworks.exception.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 public class ParkingBoyTest {
@@ -295,6 +297,52 @@ public class ParkingBoyTest {
         assertSame(4, parkingLots[0].getCapacity());
         assertSame(8, parkingLots[1].getCapacity());
     }
+
+    @Test
+    public void should_add_parking_boy_to_list_when_add_parking_boy(){
+        //given
+        ParkingLot[] parkingLots ={new ParkingLot(),new ParkingLot()};
+        ParkingManager parkingManager = new ParkingManager(parkingLots);
+
+        ParkingBoy parkingBoy = new ParkingBoy();
+
+        //when
+        parkingManager.addParkingBoy(parkingBoy);
+        ArrayList<ParkingBoy> actualParkingBoys = parkingManager.getParkingBoys();
+
+        //then
+        assertSame(true, actualParkingBoys.contains(parkingBoy));
+    }
+
+    @Test
+    public void should_bark_boy_park_or_fetch_car_from_parking_lots_when_parking_manager_specify_parking_boy(){
+        //given
+        ParkingLot firstParkingLot = new ParkingLot();
+        ParkingLot secondParkingLot = new ParkingLot();
+        ParkingLot thirdParkingLot = new ParkingLot();
+        ParkingLot[] parkingManagerParkingLots ={firstParkingLot,secondParkingLot};
+        ParkingManager parkingManager = new ParkingManager(parkingManagerParkingLots);
+        ParkingLot[] parkingBoyFirstParkingLots ={firstParkingLot};
+        ParkingLot[] parkingBoySecondParkingLots ={thirdParkingLot};
+        ParkingBoy parkingFirstBoy = new ParkingBoy(parkingBoyFirstParkingLots);
+        ParkingBoy parkingSecondBoy = new ParkingBoy(parkingBoySecondParkingLots);
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+
+        //when
+        parkingManager.addParkingBoy(parkingFirstBoy);
+        parkingManager.addParkingBoy(parkingSecondBoy);
+        ArrayList<ParkingBoy> parkingBoys = parkingManager.getParkingBoys();
+        Ticket firstTicket = parkingManager.park(firstCar).getTicket();
+        Ticket secondTicket = parkingManager.park(firstCar).getTicket();
+        Car fetchedFirstCar = parkingBoys.get(parkingBoys.size()-2).fetch(parkingManager.getParkingLots(),firstTicket).getCar();
+        Car fetchedSecondCar = parkingBoys.get(parkingBoys.size()-1).fetch(parkingManager.getParkingLots(),secondTicket).getCar();
+
+        //then
+        assertSame(firstCar, fetchedFirstCar);
+        assertSame(null, fetchedSecondCar);
+    }
+
 }
 
 

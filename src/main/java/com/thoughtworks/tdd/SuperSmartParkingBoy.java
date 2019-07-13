@@ -8,10 +8,11 @@ import com.thoughtworks.exception.TicketIsUsedException;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class SuperSmartParkingBoy {
+public class SuperSmartParkingBoy extends ParkingBoy{
     private ParkingLot[] parkingLots;
 
     public SuperSmartParkingBoy(ParkingLot[] parkingLots) {
+        super(parkingLots);
         this.parkingLots = parkingLots;
     }
 
