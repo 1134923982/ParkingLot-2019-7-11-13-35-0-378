@@ -256,4 +256,24 @@ public class ParkingBoyTest {
         assertSame(0, parkCarResult.getParkingLots()[0].getCapacity());
         assertSame(9, parkCarResult.getParkingLots()[1].getCapacity());
     }
+
+    @Test
+    public void should_park_in_more_positions_parkingLot_when_have_multiple_parkingLot(){
+        //given
+        Car firstCar = new Car();
+        Car secondCar = new Car();
+
+        ParkingLot[] parkingLots ={new ParkingLot(),new ParkingLot()};
+        SmartParkingBoy parkingBoy = new SmartParkingBoy(parkingLots);
+
+        //when
+        parkingBoy.park(firstCar);
+        parkingBoy.park(secondCar);
+
+        //then
+        assertSame(9, parkingLots[0].getCapacity());
+        assertSame(9, parkingLots[1].getCapacity());
+    }
 }
+
+
