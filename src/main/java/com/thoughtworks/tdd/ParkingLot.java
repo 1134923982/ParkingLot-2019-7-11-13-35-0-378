@@ -16,7 +16,12 @@ public class ParkingLot {
         return ticket;
     }
 
-    public Car getCar(Ticket ticket){
-        return parkingCarTicket.get(ticket);
+    public Car getCar(Ticket ticket) throws Exception {
+        if(parkingCarTicket.containsKey(ticket)){
+            return parkingCarTicket.get(ticket);
+        }else {
+            throw new Exception("the ticket is wrong");
+        }
+
     }
 }

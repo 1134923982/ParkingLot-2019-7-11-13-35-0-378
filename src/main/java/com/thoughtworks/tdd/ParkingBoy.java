@@ -12,7 +12,7 @@ public class ParkingBoy {
         return ticket;
     }
 
-    public Car fetch(Ticket ticket) {
+    public Car fetch(Ticket ticket) throws Exception {
         return parkingLot.getCar(ticket);
     }
 }
