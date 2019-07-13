@@ -335,8 +335,8 @@ public class ParkingBoyTest {
         ArrayList<ParkingBoy> parkingBoys = parkingManager.getParkingBoys();
         Ticket firstTicket = parkingManager.park(firstCar).getTicket();
         Ticket secondTicket = parkingManager.park(firstCar).getTicket();
-        Car fetchedFirstCar = parkingBoys.get(parkingBoys.size()-2).fetch(parkingManager.getParkingLots(),firstTicket).getCar();
-        Car fetchedSecondCar = parkingBoys.get(parkingBoys.size()-1).fetch(parkingManager.getParkingLots(),secondTicket).getCar();
+        Car fetchedFirstCar = parkingBoys.get(parkingBoys.size()-2).fetch(firstTicket).getCar();
+        Car fetchedSecondCar = parkingBoys.get(parkingBoys.size()-1).fetch(secondTicket).getCar();
 
         //then
         assertSame(firstCar, fetchedFirstCar);

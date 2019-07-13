@@ -71,33 +71,33 @@ public class ParkingBoy {
         return fetchCarResult;
     }
 
-    public FetchCarResult fetch(ParkingLot[] managerParkingLots, Ticket ticket) {
-        List<ParkingLot> commonParkingLots=new ArrayList<>();
-        for(int i=0;i<parkingLots.length;i++){
-            if(Arrays.asList(managerParkingLots).contains(parkingLots[i]))
-                commonParkingLots.add(parkingLots[i]);
-        }
-
-        FetchCarResult fetchCarResult = new FetchCarResult();
-        for(int i=0; i<commonParkingLots.size(); i++){
-            try {
-                fetchCarResult.setCar(commonParkingLots.get(i).getCar(ticket));
-                fetchCarResult.setMessage(null);
-                if(fetchCarResult.getCar()!=null)
-                    return fetchCarResult;
-            } catch (TicketIsUsedException ticketIsUsedException) {
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-                return fetchCarResult;
-            }
-            if(i==commonParkingLots.size()-1){
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-            }
-        }
-        if (ticket == null) {
-            fetchCarResult.setMessage("Please provide your parking ticket.");
-        }
-        return fetchCarResult;
-    }
+//    public FetchCarResult fetch(ParkingLot[] managerParkingLots, Ticket ticket) {
+//        List<ParkingLot> commonParkingLots=new ArrayList<>();
+//        for(int i=0;i<parkingLots.length;i++){
+//            if(Arrays.asList(managerParkingLots).contains(parkingLots[i]))
+//                commonParkingLots.add(parkingLots[i]);
+//        }
+//
+//        FetchCarResult fetchCarResult = new FetchCarResult();
+//        for(int i=0; i<commonParkingLots.size(); i++){
+//            try {
+//                fetchCarResult.setCar(commonParkingLots.get(i).getCar(ticket));
+//                fetchCarResult.setMessage(null);
+//                if(fetchCarResult.getCar()!=null)
+//                    return fetchCarResult;
+//            } catch (TicketIsUsedException ticketIsUsedException) {
+//                fetchCarResult.setCar(null);
+//                fetchCarResult.setMessage("Unrecognized parking ticket.");
+//                return fetchCarResult;
+//            }
+//            if(i==commonParkingLots.size()-1){
+//                fetchCarResult.setCar(null);
+//                fetchCarResult.setMessage("Unrecognized parking ticket.");
+//            }
+//        }
+//        if (ticket == null) {
+//            fetchCarResult.setMessage("Please provide your parking ticket.");
+//        }
+//        return fetchCarResult;
+//    }
 }
