@@ -15,7 +15,7 @@ public class ParkingManager extends ParkingBoy{
         parkingBoys.add(parkingBoy);
     }
 
-    public ArrayList<ParkingBoy> getParkingBoys() {
-        return parkingBoys;
+    public ParkingBoy getParkingBoy(int x) {
+        return parkingBoys.get(x);
     }
 }

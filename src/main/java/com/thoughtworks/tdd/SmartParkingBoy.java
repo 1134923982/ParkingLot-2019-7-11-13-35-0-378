@@ -36,27 +36,4 @@ public class SmartParkingBoy extends ParkingBoy{
         return parkCarResult;
     }
 
-    public FetchCarResult fetch(Ticket ticket) {
-        FetchCarResult fetchCarResult = new FetchCarResult();
-        for(int i=0; i<parkingLots.length; i++){
-            try {
-                fetchCarResult.setCar(parkingLots[i].getCar(ticket));
-                fetchCarResult.setMessage(null);
-                if(fetchCarResult.getCar()!=null)
-                    return fetchCarResult;
-            } catch (TicketIsUsedException ticketIsUsedException) {
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-                return fetchCarResult;
-            }
-            if(i==parkingLots.length-1){
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-            }
-        }
-        if (ticket == null) {
-            fetchCarResult.setMessage("Please provide your parking ticket.");
-        }
-        return fetchCarResult;
-    }
 }

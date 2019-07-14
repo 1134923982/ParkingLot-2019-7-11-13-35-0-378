@@ -8,9 +8,17 @@ import java.util.HashMap;
 public class ParkingLot {
     private HashMap<Ticket, Car> parkingCarTicket;
     private int capacity;
+    private int maxCapacity;
 
     public ParkingLot() {
         this.capacity = 10;
+        this.maxCapacity = this.capacity;
+        this.parkingCarTicket = new HashMap<>();
+    }
+
+    public ParkingLot(int capacity) {
+        this.capacity = capacity;
+        this.maxCapacity = this.capacity;
         this.parkingCarTicket = new HashMap<>();
     }
 
@@ -18,8 +26,8 @@ public class ParkingLot {
         return this.capacity;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
     public Ticket park(Car car) throws CarHasBeenPartedException, CarIsNullException {
