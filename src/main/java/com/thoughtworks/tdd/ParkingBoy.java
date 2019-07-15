@@ -10,9 +10,8 @@ import java.util.List;
 public class ParkingBoy {
 
 
-
-
     private ParkingLot[] parkingLots;
+
     public ParkingBoy() {
     }
 
@@ -23,52 +22,58 @@ public class ParkingBoy {
     public ParkingLot[] getParkingLots() {
         return parkingLots;
     }
-    public ParkCarResult park(Car car) {
-        ParkCarResult parkCarResult = new ParkCarResult();
 
-        for(int i=0; i<parkingLots.length; i++){
-            if(parkingLots[i].getCapacity()>0){
-                try {
-                    parkCarResult.setTicket(parkingLots[i].park(car));
-                }catch (CarIsNullException carIsNullException) {
-                    parkCarResult.setTicket(null);
-                }catch (CarHasBeenPartedException carIsNullException) {
-                    parkCarResult.setTicket(null);
-                } finally {
-                    parkCarResult.setParkingLots(parkingLots);
-                    return parkCarResult;
-                }
+    public Ticket park(Car car) throws CarIsNullException, CarHasBeenPartedException, ParkingLotNotPositionException {
+        ParkCarResult parkCarResult = new ParkCarResult();
+        Ticket ticket;
+        for (int i = 0; i < parkingLots.length; i++) {
+            if (parkingLots[i].getCapacity() > 0) {
+                ticket = parkingLots[i].park(car);
+                return ticket;
+//                try {
+//                    parkCarResult.setTicket(parkingLots[i].park(car));
+//                }catch (CarIsNullException carIsNullException) {
+//                    parkCarResult.setTicket(null);
+//                }catch (CarHasBeenPartedException carIsNullException) {
+//                    parkCarResult.setTicket(null);
+//                } finally {
+//                    parkCarResult.setParkingLots(parkingLots);
+//                    return parkCarResult;
+//                }
             }
-            if(i==parkingLots.length-1){
-                parkCarResult.setMessage("Not enough position.");
-                parkCarResult.setTicket(null);
-            }
+//            if(i==parkingLots.length-1){
+//                parkCarResult.setMessage("Not enough position.");
+//                parkCarResult.setTicket(null);
+//            }
         }
-        return parkCarResult;
+        throw new ParkingLotNotPositionException("Not enough position.");
     }
 
-    public FetchCarResult fetch(Ticket ticket) {
+    public Car fetch(Ticket ticket) throws WrongTicketException, TicketIsUsedException {
         FetchCarResult fetchCarResult = new FetchCarResult();
-        for(int i=0; i<parkingLots.length; i++){
-            try {
-                fetchCarResult.setCar(parkingLots[i].getCar(ticket));
-                fetchCarResult.setMessage(null);
-                if(fetchCarResult.getCar()!=null)
-                    return fetchCarResult;
-            } catch (TicketIsUsedException ticketIsUsedException) {
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-                return fetchCarResult;
-            }
-            if(i==parkingLots.length-1){
-                fetchCarResult.setCar(null);
-                fetchCarResult.setMessage("Unrecognized parking ticket.");
-            }
+        for (int i = 0; i < parkingLots.length; i++) {
+            Car car = parkingLots[i].getCar(ticket);
+            if (car != null)
+                return car;
+//            try {
+//                fetchCarResult.setCar(parkingLots[i].getCar(ticket));
+//                fetchCarResult.setMessage(null);
+//                if(fetchCarResult.getCar()!=null)
+//                    return fetchCarResult;
+//            } catch (TicketIsUsedException ticketIsUsedException) {
+//                fetchCarResult.setCar(null);
+//                fetchCarResult.setMessage("Unrecognized parking ticket.");
+//                return fetchCarResult;
+//            }
+//            if(i==parkingLots.length-1){
+//                fetchCarResult.setCar(null);
+//                fetchCarResult.setMessage("Unrecognized parking ticket.");
+//            }
         }
-        if (ticket == null) {
-            fetchCarResult.setMessage("Please provide your parking ticket.");
+        if(ticket==null){
+            throw new WrongTicketException("Unrecognized parking ticket.");
         }
-        return fetchCarResult;
+        throw new WrongTicketException("Unrecognized parking ticket.");
     }
 
 }

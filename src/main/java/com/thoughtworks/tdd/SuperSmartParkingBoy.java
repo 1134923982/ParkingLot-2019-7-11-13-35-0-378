@@ -3,6 +3,7 @@ package com.thoughtworks.tdd;
 
 import com.thoughtworks.exception.CarHasBeenPartedException;
 import com.thoughtworks.exception.CarIsNullException;
+import com.thoughtworks.exception.ParkingLotNotPositionException;
 import com.thoughtworks.exception.TicketIsUsedException;
 
 import java.util.Arrays;
@@ -16,26 +17,25 @@ public class SuperSmartParkingBoy extends ParkingBoy{
         this.parkingLots = parkingLots;
     }
 
-    public ParkCarResult park(Car car) {
+    public Ticket park(Car car) throws ParkingLotNotPositionException, CarIsNullException, CarHasBeenPartedException {
         ParkCarResult parkCarResult = new ParkCarResult();
         ParkingLot parkingLot = Arrays.stream(parkingLots).max(Comparator.comparing(p -> {
             return p.getCapacity()/(double)(p.getMaxCapacity());
         })).get();
         if(parkingLot.getCapacity()>0){
-            try {
-                parkCarResult.setTicket(parkingLot.park(car));
-            }catch (CarIsNullException carIsNullException) {
-                parkCarResult.setTicket(null);
-            }catch (CarHasBeenPartedException carIsNullException) {
-                parkCarResult.setTicket(null);
-            } finally {
-                parkCarResult.setParkingLots(parkingLots);
-                return parkCarResult;
-            }
+            return parkingLot.park(car);
+//            try {
+//                parkCarResult.setTicket(parkingLot.park(car));
+//            }catch (CarIsNullException carIsNullException) {
+//                parkCarResult.setTicket(null);
+//            }catch (CarHasBeenPartedException carIsNullException) {
+//                parkCarResult.setTicket(null);
+//            } finally {
+//                parkCarResult.setParkingLots(parkingLots);
+//                return parkCarResult;
+//            }
         }
-        parkCarResult.setMessage("Not enough position.");
-        parkCarResult.setTicket(null);
-        return parkCarResult;
+        throw new ParkingLotNotPositionException("Not enough position.");
     }
 
 }
