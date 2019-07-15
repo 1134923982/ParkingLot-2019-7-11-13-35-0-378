@@ -31,21 +31,39 @@ public class ParkingLot {
     }
 
     public Ticket park(Car car) throws CarHasBeenPartedException, CarIsNullException, ParkingLotNotPositionException {
-        if (car == null) {
-            throw new CarIsNullException("Unrecognized parking ticket.");
-        }
-        if (parkingCarTicket.containsValue(car)) {
-            throw new CarHasBeenPartedException("Unrecognized parking ticket.");
-        }
-        if (this.capacity==0) {
-            throw new ParkingLotNotPositionException("Not enough position.");
-        }
+        CarIsNull(car);
+        CarHasBeenParted(car);
+        ParkingLotNotPosition();
+        return getTicket(car);
 
+    }
+
+    private Ticket getTicket(Car car) {
         Ticket ticket = new Ticket();
         parkingCarTicket.put(ticket, car);
         this.capacity--;
         return ticket;
+    }
 
+    private boolean ParkingLotNotPosition() throws ParkingLotNotPositionException {
+        if (this.capacity == 0) {
+            throw new ParkingLotNotPositionException("Not enough position.");
+        }
+        return false;
+    }
+
+    private boolean CarHasBeenParted(Car car) throws CarHasBeenPartedException {
+        if (parkingCarTicket.containsValue(car)) {
+            throw new CarHasBeenPartedException("Unrecognized parking ticket.");
+        }
+        return false;
+    }
+
+    private boolean CarIsNull(Car car) throws CarIsNullException {
+        if (car == null) {
+            throw new CarIsNullException("Unrecognized parking ticket.");
+        }
+        return false;
     }
 
 
