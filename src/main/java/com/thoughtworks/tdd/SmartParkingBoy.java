@@ -18,20 +18,9 @@ public class SmartParkingBoy extends ParkingBoy{
     }
 
     public Ticket park(Car car) throws CarIsNullException, CarHasBeenPartedException, ParkingLotNotPositionException {
-        ParkCarResult parkCarResult = new ParkCarResult();
         ParkingLot parkingLot = Arrays.stream(parkingLots).max(Comparator.comparing(ParkingLot::getCapacity)).get();
         if(parkingLot.getCapacity()>0){
             return  parkingLot.park(car);
-//            try {
-//                parkCarResult.setTicket(parkingLot.park(car));
-//            }catch (CarIsNullException carIsNullException) {
-//                parkCarResult.setTicket(null);
-//            }catch (CarHasBeenPartedException carIsNullException) {
-//                parkCarResult.setTicket(null);
-//            } finally {
-//                parkCarResult.setParkingLots(parkingLots);
-//                return parkCarResult;
-//            }
         }
         throw new ParkingLotNotPositionException("Not enough position.");
     }

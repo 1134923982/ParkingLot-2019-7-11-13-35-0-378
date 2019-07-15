@@ -18,22 +18,11 @@ public class SuperSmartParkingBoy extends ParkingBoy{
     }
 
     public Ticket park(Car car) throws ParkingLotNotPositionException, CarIsNullException, CarHasBeenPartedException {
-        ParkCarResult parkCarResult = new ParkCarResult();
         ParkingLot parkingLot = Arrays.stream(parkingLots).max(Comparator.comparing(p -> {
             return p.getCapacity()/(double)(p.getMaxCapacity());
         })).get();
         if(parkingLot.getCapacity()>0){
             return parkingLot.park(car);
-//            try {
-//                parkCarResult.setTicket(parkingLot.park(car));
-//            }catch (CarIsNullException carIsNullException) {
-//                parkCarResult.setTicket(null);
-//            }catch (CarHasBeenPartedException carIsNullException) {
-//                parkCarResult.setTicket(null);
-//            } finally {
-//                parkCarResult.setParkingLots(parkingLots);
-//                return parkCarResult;
-//            }
         }
         throw new ParkingLotNotPositionException("Not enough position.");
     }
