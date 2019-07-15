@@ -61,14 +61,10 @@ public class ParkingBoyTest {
 
         //when
         parkingBoy.park(car);
-//        Car fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
-//        Car fetchCarByNull = parkingBoy.fetch(null);
 
         //then
         Assertions.assertThrows(WrongTicketException.class, ()->parkingBoy.fetch(wrongTicket));
         Assertions.assertThrows(WrongTicketException.class, ()->parkingBoy.fetch(null));
-//        assertSame(null, fetchCarByWrongTicket);
-//        assertSame(null, fetchCarByWrongTicket);
     }
 
     @Test
@@ -83,10 +79,8 @@ public class ParkingBoyTest {
         //when
         Ticket ticket = parkingBoy.park(car);
         parkingBoy.fetch(ticket);
-//        Car fetchCar = parkingBoy.fetch(ticket);
 
         //then
-//        assertSame(null, fetchCarResult.getCar());
         Assertions.assertThrows(TicketIsUsedException.class, ()->parkingBoy.fetch(ticket));
     }
 
@@ -105,10 +99,8 @@ public class ParkingBoyTest {
         for (int i = 0; i < cars.size() - 1; i++) {
             parkingBoy.park(cars.get(i));
         }
-        //Ticket ticket = parkingBoy.park(cars.get(cars.size() - 1));
 
         //then
-//        Exception exception = parkingBoy.park(cars.get(cars.size() - 1));
         Assertions.assertThrows(ParkingLotNotPositionException.class,()->parkingBoy.park(cars.get(cars.size() - 1)));
     }
 
@@ -135,7 +127,6 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
-        //Ticket ticket = parkingBoy.park(null);
         //then
         Assertions.assertThrows(CarIsNullException.class,()->parkingBoy.park(null));
     }
@@ -148,14 +139,11 @@ public class ParkingBoyTest {
         ParkingLot parkingLot = new ParkingLot();
         ParkingLot[] parkingLots = {parkingLot};
         ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
-//        ParkingBoy parkingBoy = new ParkingBoy(parkingLot);
         Ticket wrongTicket = new Ticket();
 
         //when
         Ticket ticket = parkingBoy.park(car);
-//        Car fetchCarByWrongTicket = parkingBoy.fetch(wrongTicket);
         parkingBoy.fetch(ticket);
-//        FetchCarResult fetchCarByUsedTicket = parkingBoy.fetch(ticket);
         //then
         Exception wrongTicketExceprion = Assertions.assertThrows(WrongTicketException.class,()->parkingBoy.fetch(wrongTicket));
         Exception usedTicketExceprion = Assertions.assertThrows(WrongTicketException.class,()->parkingBoy.fetch(wrongTicket));
@@ -173,7 +161,6 @@ public class ParkingBoyTest {
         ParkingBoy parkingBoy = new ParkingBoy(parkingLots);
 
         //when
-//        Car CarByNull = parkingBoy.fetch(null);
         Exception wrongTicketExceprion = Assertions.assertThrows(WrongTicketException.class,()->parkingBoy.fetch(null));
 
         //then
@@ -197,8 +184,6 @@ public class ParkingBoyTest {
         }
 
         Exception parkingLotNotPositionException = Assertions.assertThrows(ParkingLotNotPositionException.class,()->parkingBoy.park(cars.get(cars.size() - 1)));
-
-//        String message = parkingBoy.park(cars.get(cars.size() - 1)).getMessage();
 
         //then
         assertSame("Not enough position.", parkingLotNotPositionException.getMessage());
