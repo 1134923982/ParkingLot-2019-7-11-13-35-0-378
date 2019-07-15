@@ -70,17 +70,25 @@ public class ParkingLot {
     public Car getCar(Ticket ticket) throws TicketIsUsedException, WrongTicketException {
         if (parkingCarTicket.containsKey(ticket)) {
             if (parkingCarTicket.get(ticket) != null) {
-                Car car = parkingCarTicket.get(ticket);
-                parkingCarTicket.put(ticket, null);
-                this.capacity++;
-                return car;
+                return fetchCar(ticket);
             } else {
                 throw new TicketIsUsedException("Unrecognized parking ticket.");
             }
         }
-        if(ticket==null){
+        return isWrongTicket(ticket);
+    }
+
+    private Car isWrongTicket(Ticket ticket) throws WrongTicketException {
+        if (ticket == null) {
             throw new WrongTicketException("Please provide your parking ticket.");
         }
         throw new WrongTicketException("Unrecognized parking ticket.");
+    }
+
+    private Car fetchCar(Ticket ticket) {
+        Car car = parkingCarTicket.get(ticket);
+        parkingCarTicket.put(ticket, null);
+        this.capacity++;
+        return car;
     }
 }
