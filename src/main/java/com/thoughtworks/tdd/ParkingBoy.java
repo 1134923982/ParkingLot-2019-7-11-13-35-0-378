@@ -36,9 +36,6 @@ public class ParkingBoy {
             if (car != null)
                 return car;
         }
-        if(ticket==null){
-            throw new WrongTicketException("Unrecognized parking ticket.");
-        }
         throw new WrongTicketException("Unrecognized parking ticket.");
     }
 
